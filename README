@@ -1,0 +1,120 @@
+mtf - a Microsoft Tape Format reader (and future writer?)
+Copyright (C) 1999-2000  D. Alan Stewart, Layton Graphics, Inc.
+
+This program is free software; you can redistribute it and/or modify
+it under the terms of the GNU General Public License as published by
+the Free Software Foundation; either version 2 of the License, or
+(at your option) any later version.
+
+This program is distributed in the hope that it will be useful,
+but WITHOUT ANY WARRANTY; without even the implied warranty of
+MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+GNU General Public License for more details.
+
+You should have received a copy of the GNU General Public License
+along with this program; if not, write to the Free Software
+Foundation, Inc., 675 Mass Ave, Cambridge, MA 02139, USA.
+
+Contact the author at:
+
+D. Alan Stewart
+Layton Graphics, Inc.
+155 Woolco Dr.
+Marietta, GA 30062
+astewart@layton-graphics.com
+
+
+9/13/2000 - mtf version 0.2.1
+
+Several enhancements have been added. The most significant is that mtf can now
+automatically detect the block size of a tape drive. If for some reason this
+does not work with your tape drive, a '-b' option allows specifying this at run
+time. The '-f' switch for preserving free space has been changed to '-F'. This
+option now tests for free space before writing each file instead of at directory
+creation time. Slower, but more accurate. Using a pattern to selectively read
+files from a tape now only creates the minimal directories required. Finally,
+mtf now looks for an MTF_OPTS environment variable. This variable should be an
+option string for mtf.
+
+Usage: mtf [options] [pattern(s)]
+    -v               verbose
+    -V               very verbose
+    -D               debug
+    -l               list contents
+    -b bytes         tape block size
+    -d device        device to read from
+    -s set           number of data set to read
+    -u user          assign owner to all files/directories written
+    -g group         assign group to all files/directories written
+    -c [lower|upper] force the case of paths
+    -o path          root path to write files to
+    -F bytes[K|M]    maintain minimum free space of bytes;
+                     a K or M suffix signifies kilobytes or megabytes
+    pattern(s)       only read file paths that match regex pattern(s)
+
+
+3/30/1999 - mtf version 0.1
+
+WARNING! I DO NOT RECOMMEND USING THIS SOFTWARE UNLESS YOU ARE A C PROGRAMMER.
+For that reason the program is provided only as C source code. It is poorly
+tested as of yet - only with tapes written by one source and read by one tape
+drive. At this writing it has successfully read over 150 gigabytes of data from
+a series of four DLT tapes. I have not found any bugs lately, but am sure plenty
+will be found as others try it.
+
+This is the first publicly released version of mtf, a bare-bones reader for
+Microsoft Tape Format tapes. Not a lot is supported at this point, but it does
+everything I need it to do. This is my first effort at publicly releasing
+software. It is also the first time I have manipulated a tape drive from a C
+program. In particular, I do not know if it works with any drive other than my
+Intergraph 40GB DLT tape drive. There may be better ways to do what I have done.
+Please send any bug fixes or suggestions for improvements in the C code (other
+than new features) to me. If you wish to add functionality, let me know about it
+and I will try to coordinate and integrate everyone's efforts. I myself do not
+have any plans for adding features to the program at this time, but I'd love to
+see the Linux community develop it into a freely available, open source,
+full-featured reader and writer. Even better if it also becomes a portable,
+cross-platform program as pervasive as cpio or tar.
+
+This program is based on Microsoft Tape Format Specification Version 1.00a,
+Document Revision 1.8. This document is available at:
+
+http://www.seagatesoftware.com/products/sm/library/whitepapers/downloads/mtfv1r18.zip
+
+Usage: mtf [options] [pattern(s)]
+
+Options:
+
+    -v               verbose
+    -V               very verbose
+    -D               debug
+    -l               list contents
+    -d device        device to read from
+    -s set           number of data set to read
+    -u user          assign owner to all files/directories written;
+                     useful only for the root user
+    -g group         assign group to all files/directories written;
+                     useful only for the root user
+    -c [lower|upper] force the case of paths
+    -o path          root path to write files/directories to
+    -f bytes[K|M]    maintain minimum free space of bytes;
+                     a K or M suffix signifies kilobytes or megabytes
+
+Most of the options require no further explanation. The -f option is something
+I have implemented to solve a problem specific to my site. Maybe some others
+will find it useful also. When this option is specified mtf will test free
+space available on the volume before writing a directory. If the space available
+is less than the specified threshold an error message is printed and mtf goes to
+sleep for one minute. It repeats this cycle until free space is greater than the
+threshold. (When I use mtf, there is a coprocess that is processing directories,
+archiving them to another volume, and then deleting them from the current volume
+as the tape is being read. Unfortunatley, mtf reads data from my tape drive
+faster than the data can be processed.)
+
+Patterns:
+
+POSIX basic regular expressions, case-insensitive, no substring addressing, no
+newline matching as used by regcomp() and regexec().
+
+
+Enjoy!

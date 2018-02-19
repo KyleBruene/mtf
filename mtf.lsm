@@ -1,0 +1,12 @@
+Begin4
+Title: mtf
+Version: 0.2.1
+Entered-date: 9/13/2000
+Description: A Linux reader for the Microsoft Tape Format used by NT Backup.
+Keywords: MTF,Microsoft Tape Format,NT Backup,tape,reader
+Author: astewart@layton-graphics.com (Alan Stewart)
+Maintained-by: astewart@layton-graphics.com (Alan Stewart)
+Primary-site:  http://layton-graphics.com/mtf
+Platforms: Linux, SCSI tape drive, C compiler
+Copying-policy: GPL
+End
